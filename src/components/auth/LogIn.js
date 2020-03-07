@@ -1,14 +1,17 @@
 // auth/Login.js
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import AuthService from './auth-service';
 import { Link } from 'react-router-dom';
+import MyContext from '../../context';
 
 const LogIn = props => {
   const [ formState, updateFormState ] = useState (
     { username: '', password: '' }
   )
   const service = new AuthService()
+
+  const { updateUser } = useContext(MyContext);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -17,7 +20,7 @@ const LogIn = props => {
     service.login(username, password)
     .then( response => {
         updateFormState({ username: "", password: "" });
-        props.getUser(response)
+        updateUser(response)
     })
     .catch( error => console.log(error) )
   }
@@ -27,7 +30,6 @@ const LogIn = props => {
     updateFormState(Object.assign({}, formState, {[name]: value}));
   }
     
-  
     return(
       <div>
         <form onSubmit={handleFormSubmit}>

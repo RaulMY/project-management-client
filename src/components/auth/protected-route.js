@@ -1,16 +1,17 @@
 // auth/protected-route.js
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import MyContext from '../../context';
 
-const protectedRoute  = ({component: Component, user, ...rest}) => {
-  console.log({component: Component, user, ...rest})
+const ProtectedRoute  = ({component: Component, ...rest}) => {
+    const { user } = useContext(MyContext);
     return (
       <Route
         {...rest}
         render={ props  => {
             if(user){
-              return <Component {...props} loggedInUser={user}/>
+              return <Component {...props} />
             } else {
               return <Redirect to={{pathname: '/', state: {from: props.location}}} />
             }
@@ -19,4 +20,4 @@ const protectedRoute  = ({component: Component, user, ...rest}) => {
       />
     )
 }
-export default protectedRoute;
+export default ProtectedRoute;

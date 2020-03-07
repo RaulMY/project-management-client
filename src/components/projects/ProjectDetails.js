@@ -1,13 +1,15 @@
 // components/projects/ProjectDetails.js
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import EditProject from './EditProject';
 import AddTask from '../tasks/AddTask';
+import MyContext from '../../context';
 
-const ProjectDetails = (props) => {
+const ProjectDetails = () => {
 
+  const { user } = useContext(MyContext);
 
   const history = useHistory();
   const { id } = useParams();
@@ -36,7 +38,7 @@ const ProjectDetails = (props) => {
     if(!theProject.title){
       getSingleProject();
     } else {                                                                                  
-      return (<EditProject theProject={theProject} getTheProject={getSingleProject} {...props} />)
+      return (<EditProject theProject={theProject} getTheProject={getSingleProject} />)
     }
   }
 
@@ -52,9 +54,7 @@ const ProjectDetails = (props) => {
 
 
   const ownershipCheck = (project) => {
-      console.log(project)
-      console.log(props.loggedInUser)
-    if(props.loggedInUser && project.owner == props.loggedInUser._id) {
+    if(user && project.owner == user._id) {
       return (
         <div>
             {/* show the task heading only if there are tasks */}

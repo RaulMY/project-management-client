@@ -1,14 +1,16 @@
 // auth/Signup.js
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import AuthService from './auth-service';
 import { Link } from 'react-router-dom';
+import MyContext from '../../context';
 
-const SignUp = props => {
+const SignUp = () => {
 
   const [ formState, updateFormState ] = useState({ username: '', password: '' })
   const service = new AuthService();
-  // handleChange() and handleSubmit() will be added here
+
+  const { updateUser } = useContext(MyContext);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -21,7 +23,7 @@ const SignUp = props => {
             username: "", 
             password: "",
         });
-        props.getUser(response)
+        updateUser(response)
     })
     .catch( error => console.log(error) )
   }
@@ -46,7 +48,6 @@ const SignUp = props => {
       <p>Already have account? 
           <Link to={"/"}> Login</Link>
       </p>
-
     </div>
   )
 }
